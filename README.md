@@ -34,3 +34,47 @@ Eshell V14.0 (press Ctrl+G to abort, type help(). for help)
 2> wat:lower( << "F00" >>).
 <<"f00">>
 ```
+
+## Decompile .beam code
+
+```
+-file("lib/wat.ex", 1).
+
+-module('Elixir.Wat').
+
+-compile([no_auto_import]).
+
+-export(['__info__'/1, lower/1, main/1]).
+
+-spec '__info__'(attributes |
+                 compile |
+                 functions |
+                 macros |
+                 md5 |
+                 exports_md5 |
+                 module |
+                 deprecated |
+                 struct) -> any().
+
+'__info__'(module) -> 'Elixir.Wat';
+'__info__'(functions) -> [{lower, 1}, {main, 1}];
+'__info__'(macros) -> [];
+'__info__'(struct) -> nil;
+'__info__'(exports_md5) ->
+    <<"\024Áa5\037ý\031\2073Ì|i0´à¤">>;
+'__info__'(Key = attributes) ->
+    erlang:get_module_info('Elixir.Wat', Key);
+'__info__'(Key = compile) ->
+    erlang:get_module_info('Elixir.Wat', Key);
+'__info__'(Key = md5) ->
+    erlang:get_module_info('Elixir.Wat', Key);
+'__info__'(deprecated) -> [].
+
+lower(<<_h@1/integer, _t@1/binary>>)
+    when erlang:is_integer(_h@1) andalso
+             _h@1 >= 65 andalso _h@1 =< 90 ->
+    <<(_h@1 + 32):8/binary, _t@1/binary>>.
+
+main(_) -> 'Elixir.IO':puts(lower(<<"WAT">>)).
+```
+
