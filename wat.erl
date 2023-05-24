@@ -2,6 +2,7 @@
 -export([lower/1]).
 -compile(debug_info).
 
-lower(<<Char:8, Rest/binary>>) when Char >= $A, Char =< $Z ->
-    <<(Char+32):8, Rest/binary>>.
-
+lower(<<Char/integer, Rest/binary>>)
+    when erlang:is_integer(Char) andalso
+             Char >= 65 andalso Char =< 90 ->
+    <<(Char + 32):8/binary, Rest/binary>>.
